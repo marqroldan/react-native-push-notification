@@ -63,6 +63,14 @@ public class RNPushNotificationListenerService extends FirebaseMessagingService 
             if (!bundle.containsKey("color")) {
                 bundle.putString("color", data.optString("color", null));
             }
+            
+            if(!bundle.containsKey("messageType") && bundle.getString("messageType").equals("CALL")) {
+                Log.d(TAG, messageType);
+                Intent i = new Intent(getBaseContext(), MainActivity.class);
+                i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_REORDER_TO_FRONT | Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                i.putExtra("intentType", "CALL_RING");
+                startActivity(i);
+            }
 
             final int badge = data.optInt("badge", -1);
             if (badge >= 0) {
